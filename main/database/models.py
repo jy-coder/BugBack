@@ -6,5 +6,9 @@ class User (models.Model):
     email = models.CharField(max_length=100)
     role_id = models.IntegerField()
 
+    class Meta:
+        db_table = "users"
+
+
 
 
