@@ -7,3 +7,10 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = '__all__'
 
+
+class BugSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bug
+        fields = '__all__'
+
+
