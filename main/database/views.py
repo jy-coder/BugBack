@@ -1,23 +1,15 @@
-from django.shortcuts import render
-
-from rest_framework.views import APIView
-from rest_framework.response import Response
-from rest_framework import status
-from rest_framework import viewsets
-from .models import User
-from .serializer import UserSerializer
-from rest_framework import mixins
-from rest_framework import generics
+# views.py
+from rest_framework.mixins import (CreateModelMixin, ListModelMixin, RetrieveModelMixin, UpdateModelMixin)
+from rest_framework.viewsets import GenericViewSet
+from .models import Role, User, Bug
+from .serializers import RoleSerializer, UserSerializer, BugSerializer
 
 
-# Create your views here.
-class UserApiView(mixins.CreateModelMixin,generics.ListAPIView):
-    serializer_class = UserSerializer
+class BugViewSet(GenericViewSet,  # generic view functionality
+                     CreateModelMixin,  # handles POSTs
+                     RetrieveModelMixin,  # handles GETs for 1 Company
+                     UpdateModelMixin,  # handles PUTs and PATCHes
+                     ListModelMixin):  # handles GETs for many Companies
 
-
-    def get_queryset(self):
-        return User.objects.all()
-
-    def post(self, request, *args, **kwargs):
-        return self.create(request, *args, **kwargs)
-
+      serializer_class = BugSerializer
+      queryset = Bug.objects.all()
