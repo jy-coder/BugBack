@@ -8,11 +8,6 @@ from django.db import models
 
 
 class Role (models.Model):
-    REPORTER = 'REPORTER'
-    DEVELOPER = 'DEVELOPER'
-    REVIEWER = 'REVIEWER'
-    TRIAGER = 'TRIAGER'
-
     ROLE_CHOICES =  [
         ('REPORTER', 'Reporter'),
         ('DEVELOPER', 'Developer'),
