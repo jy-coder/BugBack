@@ -15,6 +15,7 @@ import os
 from dotenv import load_dotenv, find_dotenv
 
 
+
 load_dotenv(find_dotenv())
 env_lst = ['HOST','USER','PORT','PASSWORD','DATABASE']
 dict = {}
@@ -48,7 +49,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'database',
-    
+    'firebase_auth',
+    'knox'
 ]
 
 MIDDLEWARE = [
@@ -94,6 +96,11 @@ DATABASES = {
     'HOST': 'localhost',
     'PORT': '',
     }
+}
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication',)
 }
 
 

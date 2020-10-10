@@ -20,6 +20,8 @@ class User (models.Model):
     username = models.CharField(max_length=50)
     email = models.CharField(max_length=100)
     role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
+    username = models.CharField(max_length=100)
+    password = models.CharField(max_length=100)
 
     class Meta:
         db_table = "users"
