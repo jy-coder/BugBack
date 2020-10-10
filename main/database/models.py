@@ -1,10 +1,5 @@
 from django.db import models
 
-# Create your models here.
-# manage.py migrate --fake database  0002
-# manage.py makemigrations
-# manage.py migrate
-
 
 
 class Role (models.Model):

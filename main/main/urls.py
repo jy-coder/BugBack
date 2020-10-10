@@ -22,4 +22,13 @@ router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
 router.register(r'users', UserViewSet, basename='user')
 router.register(r'bugs', BugViewSet, basename='bug')
-urlpatterns = router.urls
+
+
+
+urlpatterns = [
+    path('', include(router.urls)),
+	path("main", include("database.urls")),
+
+]
+
+
