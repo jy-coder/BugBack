@@ -1,26 +1,11 @@
 from .models import User, Role, Comment, Bug
 from django.shortcuts import get_object_or_404
-from .serializers import UserSerializer, BugSerializer,RoleSerializer, CommentSerializer, LoginSerializer, RegisterSerializer
-from rest_framework import viewsets
+from .serializers import  BugSerializer,RoleSerializer, CommentSerializer
+from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from django.http import HttpResponse, JsonResponse
 from knox.models import AuthToken
 from rest_framework import generics, permissions
-
-class UserViewSet(viewsets.ViewSet):
-    """
-    A simple ViewSet for listing or retrieving users.
-    """
-    def list(self, request):
-        queryset = User.objects.all()
-        serializer = UserSerializer(queryset, many=True)
-        return JsonResponse(serializer.data, safe=False)
-
-    def retrieve(self, request, pk=None):
-        queryset = User.objects.all()
-        user = get_object_or_404(queryset, pk=pk)
-        serializer = UserSerializer(user)
-        return JsonResponse(serializer.data, safe=False)
 
 
 
@@ -82,30 +67,6 @@ class BugViewSet(viewsets.ViewSet):
         return JsonResponse(serializer.data, safe=False)
 
 
-    # Login API
-class LoginAPI(generics.GenericAPIView):
-  serializer_class = LoginSerializer
-
-  def post(self, request, *args, **kwargs):
-    print("login req made")
-    serializer = self.get_serializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user = serializer.validated_data
-    _, token = AuthToken.objects.create(user)
-    return Response({
-      "user": UserSerializer(user, context=self.get_serializer_context()).data,
-      "token": token
-    })
 
 
-class RegisterAPI(generics.GenericAPIView):
-  serializer_class = RegisterSerializer
 
-  def post(self, request, *args, **kwargs):
-    serializer = self.get_serializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-    user = serializer.save()
-    return Response({
-      "user": UserSerializer(user, context=self.get_serializer_context()).data,
-      "token": AuthToken.objects.create(user)[1]
-    })

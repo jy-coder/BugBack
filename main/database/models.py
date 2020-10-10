@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.auth.models import User
 
 
 class Role (models.Model):
@@ -16,15 +16,6 @@ class Role (models.Model):
     class Meta:
         db_table = "roles"
 
-class User (models.Model):
-    username = models.CharField(max_length=50)
-    email = models.CharField(max_length=100)
-    role = models.ForeignKey(Role, on_delete=models.CASCADE,null=True)
-    username = models.CharField(max_length=100)
-    password = models.CharField(max_length=100)
-
-    class Meta:
-        db_table = "users"
 
 class Bug (models.Model):
     name = models.CharField(null=True,max_length=1000)
