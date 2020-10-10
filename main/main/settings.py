@@ -86,12 +86,12 @@ WSGI_APPLICATION = 'main.wsgi.application'
 
 DATABASES = {
     'default': {
-    'ENGINE': 'django.db.backends.postgresql',
-    'NAME': dict['DATABASE'],
-    'USER': dict['USER'],
-    'PASSWORD': dict['PASSWORD'],
-    'HOST': dict['HOST'],
-    'PORT': dict['PORT'],
+    'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    'NAME': 'bugapp',
+    'USER': 'myprojectuser',
+    'PASSWORD': '123456',
+    'HOST': 'localhost',
+    'PORT': '',
     }
 }
 

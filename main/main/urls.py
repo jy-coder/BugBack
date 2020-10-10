@@ -20,4 +20,6 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
+router.register(r'users', UserViewSet, basename='user')
+router.register(r'bugs', BugViewSet, basename='bug')
 urlpatterns = router.urls
