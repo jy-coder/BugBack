@@ -27,7 +27,7 @@ router.register(r'bugs', BugViewSet, basename='bug')
 urlpatterns = [
     path('', include(router.urls)),
 	path('', include("database.urls")),
-
+    path('', include("accounts.urls")),
 
 ]
 

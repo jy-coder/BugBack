@@ -88,12 +88,12 @@ def init_role():
 
 def test_data():
     one_role = "INSERT INTO roles VALUES(1 , 'developer');"
-    one_user = "INSERT INTO users VALUES(1,'username','123@gmail.com',1);"
+    # one_user = "INSERT INTO users VALUES(1,'username','123@gmail.com',1);"
 
     # one_role = "delete from roles where id=1;"
     # one_user= "delete from users where id=1;"
 
-    # cur.execute(one_role)
+    cur.execute(one_role)
     # cur.execute(one_user)
 
 
