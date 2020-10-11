@@ -1,4 +1,5 @@
 from .models import  Role, Comment, Bug
+from django.contrib.auth.models import User 
 from django.shortcuts import get_object_or_404
 from .serializers import  BugSerializer,RoleSerializer, CommentSerializer
 from rest_framework import viewsets, permissions
@@ -6,6 +7,7 @@ from rest_framework.response import Response
 from django.http import HttpResponse, JsonResponse
 from knox.models import AuthToken
 from rest_framework import generics, permissions
+from django.http import HttpResponse, JsonResponse
 
 
 
@@ -65,6 +67,11 @@ class BugViewSet(viewsets.ViewSet):
         instance = get_object_or_404(queryset, pk=pk)
         serializer = BugSerializer(instance)
         return JsonResponse(serializer.data, safe=False)
+
+
+
+
+
 
 
 

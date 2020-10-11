@@ -1,6 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import User 
+from django.dispatch import receiver
+from django.db.models.signals import post_save
 
+
+#######for testing endpoint -can remove later########
 class Role (models.Model):
     ROLE_CHOICES = [
         ('user','user'), 
@@ -13,54 +17,46 @@ class Role (models.Model):
 
 
 
-class UserManager(BaseUserManager):
-    use_in_migrations = True
+class Profile(models.Model):
+    ROLE_CHOICES = [
+        ('user','user'), 
+        ('developer','developer'),
+        ('triager','triager'),
+        ('reviewer','reviewer'),
+    ]
+    user = models.OneToOneField(User,on_delete=models.CASCADE,null=True)
+    role_title = models.CharField(max_length=50,null=True,choices=ROLE_CHOICES)
 
-    def _create_user(self, username, email, password, **extra_fields):
-        """
-        Create and save a user with the given username, email, and password.
-        """
-        if not username:
-            raise ValueError('The given username must be set')
-        email = self.normalize_email(email)
-        username = self.model.normalize_username(username)
-        user = self.model(username=username, email=email, **extra_fields)
-        user.set_password(password)
-        user.save(using=self._db)
-        return user
-
-
-
-
-class User(AbstractBaseUser):
-    username = models.CharField(max_length=50,null=True)
-    email = models.CharField(max_length=50,null=True)
-    password = models.CharField(max_length=100,null=False)
-    role = models.ForeignKey(Role, null=True, default=None, on_delete=models.SET_NULL)
-
-
-    USERNAME_FIELD = 'username'
-
- 
     class Meta:
-        db_table = "users"
+        db_table = "profile"
+
+    ## anything added into the user database will be added here
+    # change role_title here when populating database
+
+    @receiver(post_save, sender=User)
+    def create_user_profile(sender, instance, created, **kwargs):
+        if created:
+            Profile.objects.create(user=instance,role_title='user')
+
+
+    @receiver(post_save, sender=User)
+    def save_user_profile(sender, instance, **kwargs):
+        instance.profile.save()
 
 
 class Comment (models.Model):
     comment_text = models.CharField(null=True,max_length=1000)
     user = models.ForeignKey(User, null=True, default=None, on_delete=models.SET_NULL)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
     class Meta:
         db_table = "comments"
 
 
 class Bug (models.Model):
-
-
     def validate_developer_assigned(self):
         developer = self.cleaned_data.get("developer_assigned")
         print(developer)
-
-
 
     class Meta:
         db_table = "bugs"
@@ -73,6 +69,8 @@ class Bug (models.Model):
     comment = models.ForeignKey(Comment, null=True, default=None, on_delete=models.SET_NULL)
     upvote_count =  models.IntegerField(default=0)
     downvote_count =  models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 

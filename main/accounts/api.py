@@ -1,31 +1,31 @@
 from rest_framework import generics, permissions
 from rest_framework.response import Response
 from knox.models import AuthToken
-from .serializers import UserSerializer, RegisterSerializer, LoginSerializer
-from database.models import User
+from .serializers import UserSerializer, RegisterSerializer, LoginSerializer,ProfileSerializer
+from django.contrib.auth.models import User
+from database.models import Profile
+from django.http import HttpResponse, JsonResponse
 
-# Register API
+
+# Normal Register API
 class RegisterAPI(generics.GenericAPIView):
   serializer_class = RegisterSerializer
 
   def post(self, request, *args, **kwargs):
     serializer = self.get_serializer(data=request.data)
     serializer.is_valid(raise_exception=True)
-    
-    user = serializer.save()
+
 
     user_instance = UserSerializer(user, context=self.get_serializer_context()).data
-    # userprofile_id = user_instance['id']
-    # userprofile_instance = User(user_id=userprofile_id, role_id=1)
-    # userprofile_instance.save()
-
-
-
     
     return Response({
       "user": user_instance,
       "token": AuthToken.objects.create(user)[1]
     })
+
+
+
+
 
 # Login API
 class LoginAPI(generics.GenericAPIView):
@@ -42,11 +42,19 @@ class LoginAPI(generics.GenericAPIView):
     })
 
 # Get User API
-class UserAPI(generics.RetrieveAPIView):
-  permission_classes = [
-    permissions.IsAuthenticated,
-  ]
-  serializer_class = UserSerializer
+class UserAPI(generics.ListCreateAPIView):
+  # permission_classes = [
+  #   permissions.IsAuthenticated,
+  # ]
+  serializer_class =ProfileSerializer
+  queryset = Profile.objects.all()
+  
+  def list(self, request):
+      # Note the use of `get_queryset()` instead of `self.queryset`
+      queryset = self.get_queryset()
+      serializer = ProfileSerializer(queryset, many=True)
+      return Response(serializer.data)
 
-  def get_object(self):
-    return self.request.user
+class SingleUserAPI(generics.RetrieveAPIView):
+    queryset = Profile.objects.all()
+    serializer_class = ProfileSerializer
