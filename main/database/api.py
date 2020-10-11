@@ -8,14 +8,14 @@ from django.contrib.auth.models import User
 import string
 
 
-### Populate database method - must change serializer###
+### Populate database method -this should only be run once###
 @csrf_exempt
 @require_http_methods(["GET"])
 def test_endpoint(req):
     
     hash_passwd = make_password("123456")
 
-    for i in range(0,15):
+    for i in range(1,15):
         #save pw , email, username
         user = User(id=i,username="test{}".format(i), 
         email="test{}@gmail.com".format(i), password=hash_passwd) 

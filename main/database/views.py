@@ -11,7 +11,7 @@ from django.http import HttpResponse, JsonResponse
 
 
 
-
+#########THIS IS FOR TESTING ENDPOINT (can delete ltr)#########3
 class RoleViewSet(viewsets.ViewSet):
     """
     A simple ViewSet for listing or retrieving users.
@@ -56,18 +56,34 @@ class RoleViewSet(viewsets.ViewSet):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class BugViewSet(viewsets.ViewSet):
+    
+class BugListAPI (generics.ListCreateAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+    queryset = Bug.objects.all()
+    serializer_class = BugSerializer
+
+    ##view lists of bugs
     def list(self, request):
-        queryset = Bug.objects.all()
+        queryset = self.get_queryset()
         serializer = BugSerializer(queryset, many=True)
-        return JsonResponse(serializer.data, safe=False)
+        return Response(serializer.data)
 
-    def retrieve(self, request, pk=None):
-        queryset = Bug.objects.all()
-        instance = get_object_or_404(queryset, pk=pk)
-        serializer = BugSerializer(instance)
-        return JsonResponse(serializer.data, safe=False)
+    ##create bugs
+    def perform_create(self, serializer):
+        serializer.save(reported_by=self.request.user)
 
+
+## need to add single bug view (not completed)
+class BugSingleAPI (generics.ListAPIView):
+    queryset = Bug.objects.all()
+    serializer_class = BugSerializer
+
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = BugSerializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 

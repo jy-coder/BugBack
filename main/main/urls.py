@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from database.views import BugViewSet, RoleViewSet
+from database.views import RoleViewSet, BugListAPI
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
-router.register(r'bugs', BugViewSet, basename='bug')
+
+########## Authenticate route #######
 
 
 
@@ -28,6 +29,8 @@ urlpatterns = [
     path('', include(router.urls)),
 	path('', include("database.urls")),
     path('', include("accounts.urls")),
+    path('bugs', BugListAPI.as_view()),
+    # path('bugs/<int:pk>', BugSingleAPI.as_view()),
 
 ]
 
