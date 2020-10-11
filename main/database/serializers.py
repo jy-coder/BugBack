@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import  Bug, Role, Comment
+from .models import  Bug, Role, Comment, UserProfile
 from django.contrib.auth import authenticate
 
 
@@ -20,4 +20,8 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = UserProfile
+        fields = '__all__'
 

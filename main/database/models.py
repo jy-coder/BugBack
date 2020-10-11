@@ -27,7 +27,7 @@ class Comment (models.Model):
         db_table = "comments"
 
 
-class Employee(models.Model):
+class UserProfile(models.Model):
    user = models.OneToOneField(User,null=True, on_delete=models.SET_NULL)
    role = models.OneToOneField(Role,null=True, on_delete=models.SET_NULL)
 
@@ -36,7 +36,7 @@ class Bug (models.Model):
     name = models.CharField(null=True,max_length=1000)
     status = models.CharField(null=True,max_length=1000)
     priority = models.CharField(null=True,max_length=1000)
-    developer_assigned = models.ForeignKey(Employee,null=True,on_delete=models.SET_NULL)
+    developer_assigned = models.ForeignKey(UserProfile,null=True,on_delete=models.SET_NULL)
     comment = models.ForeignKey(Comment, null=True, default=None, on_delete=models.SET_NULL)
     upvote_count =  models.IntegerField(default=0)
     downvote_count =  models.IntegerField(default=0)

@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from database.views import BugViewSet, RoleViewSet
+from database.views import BugViewSet, RoleViewSet, UserProfileViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'roles', RoleViewSet, basename='role')
 router.register(r'bugs', BugViewSet, basename='bug')
-
+router.register(r'userprofile', BugViewSet, basename='userprofile')
 
 
 urlpatterns = [

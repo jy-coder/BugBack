@@ -1,4 +1,4 @@
-from .models import User, Role, Comment, Bug
+from .models import UserProfile, Role, Comment, Bug
 from django.shortcuts import get_object_or_404
 from .serializers import  BugSerializer,RoleSerializer, CommentSerializer
 from rest_framework import viewsets, permissions
@@ -62,8 +62,21 @@ class BugViewSet(viewsets.ViewSet):
 
     def retrieve(self, request, pk=None):
         queryset = Bug.objects.all()
+        instance = get_object_or_404(queryset, pk=pk)
+        serializer = BugSerializer(instance)
+        return JsonResponse(serializer.data, safe=False)
+
+
+class UserProfileViewSet(viewsets.ViewSet):
+    def list(self, request):
+        queryset = UserProfile.objects.all()
+        serializer = UserProfileSerializer(queryset, many=True)
+        return JsonResponse(serializer.data, safe=False)
+
+    def retrieve(self, request, pk=None):
+        queryset = UserProfile.objects.all()
         user = get_object_or_404(queryset, pk=pk)
-        serializer = BugSerializer(user)
+        serializer = UserProfileSerializer(user)
         return JsonResponse(serializer.data, safe=False)
 
 
