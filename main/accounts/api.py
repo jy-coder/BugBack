@@ -16,12 +16,14 @@ class RegisterAPI(generics.GenericAPIView):
     serializer.is_valid(raise_exception=True)
 
 
-    user_instance = UserSerializer(user, context=self.get_serializer_context()).data
+    user_instance = UserSerializer(User, context=self.get_serializer_context()).data
     
     return Response({
       "user": user_instance,
-      "token": AuthToken.objects.create(user)[1]
+      "token": AuthToken.objects.create(User)[1]
     })
+
+
 
 
 

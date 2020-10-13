@@ -1,9 +1,10 @@
-from .models import  Role, Comment, Bug
+from .models import Role, Comment, Bug
 from django.contrib.auth.models import User 
 from django.shortcuts import get_object_or_404
-from .serializers import  BugSerializer,RoleSerializer, CommentSerializer
-from rest_framework import viewsets, permissions
+from .serializers import BugSerializer,RoleSerializer, CommentSerializer, BugReportSerializer
+from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
+from rest_framework.views import APIView
 from django.http import HttpResponse, JsonResponse
 from knox.models import AuthToken
 from rest_framework import generics, permissions
@@ -55,7 +56,6 @@ class RoleViewSet(viewsets.ViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-
     
 class BugListAPI (generics.ListCreateAPIView):
     permission_classes = [
@@ -86,7 +86,27 @@ class BugSingleAPI (generics.ListAPIView):
         return Response(serializer.data)
 
 
+class AddBugReportAPI(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
 
+    def get(self, request):
+        #  get all reports from db
+        reports = Bug.objects.all()
+        # parse all reports into JSON object
+        serializer = BugReportSerializer(reports, many=True)
+        return Response(serializer.data)
+
+    def post(self, request):
+        serializer = BugReportSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            # 201 is created status
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        # else return error status 400
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 

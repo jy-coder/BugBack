@@ -20,5 +20,9 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
 
-
+class BugReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bug
+        #fields = ['id', 'name', 'created_at']
+        fields = '__all__'
 
