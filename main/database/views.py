@@ -91,13 +91,6 @@ class AddBugReportAPI(APIView):
         permissions.IsAuthenticated,
     ]
 
-    def get(self, request):
-        #  get all reports from db
-        reports = Bug.objects.all()
-        # parse all reports into JSON object
-        serializer = BugReportSerializer(reports, many=True)
-        return Response(serializer.data)
-
     def post(self, request):
         serializer = BugReportSerializer(data=request.data)
 
@@ -109,9 +102,35 @@ class AddBugReportAPI(APIView):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
+#view and update bug report
+class BugReportAPI(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
 
+    def get_object(self, id):   # id as the primary key
+        try:
+            return Bug.objects.get(id=id)
 
+        except Bug.DoesNotExist:
+            return HttpResponse(status=status.HTTP_404_NOT_FOUND)
 
+    def get(self, request,id):
+        #  get all reports from db
+        report = self.get_object(id)
+        # parse all reports into JSON object
+        serializer = BugReportSerializer(report)
+        return Response(serializer.data)
+
+    def patch(self, request, id):
+        print("patch req {}".format(request.data))
+        instance = self.get_object(id)
+        serializer = BugReportSerializer(instance, data=request.data,
+                                    partial=True)  # set partial=True to update a data partially
+        if serializer.is_valid():
+            serializer.save()
+            return JsonResponse(data=serializer.data)
+        return JsonResponse(data="wrong parameters")
 
 
 
