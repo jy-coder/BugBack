@@ -2,6 +2,7 @@ from .models import Role, Comment, Bug
 from django.contrib.auth.models import User 
 from django.shortcuts import get_object_or_404
 from .serializers import BugSerializer,RoleSerializer, CommentSerializer, BugReportSerializer
+from accounts.serializers import UserSerializer
 from rest_framework import viewsets, permissions, status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -56,13 +57,19 @@ class RoleViewSet(viewsets.ViewSet):
         self.perform_destroy(instance)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-    
+
+
+
+
+
+
+
 class BugListAPI (generics.ListCreateAPIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
+    
     queryset = Bug.objects.all()
-    serializer_class = BugSerializer
 
     ##view lists of bugs
     def list(self, request):
@@ -84,6 +91,7 @@ class BugSingleAPI (generics.ListAPIView):
         queryset = self.get_queryset()
         serializer = BugSerializer(queryset, many=True)
         return Response(serializer.data)
+
 
 
 class AddBugReportAPI(APIView):
