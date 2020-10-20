@@ -7,6 +7,8 @@ from database.models import Profile
 from django.http import HttpResponse, JsonResponse
 
 
+##########
+
 # Normal Register API
 class RegisterAPI(generics.GenericAPIView):
   serializer_class = RegisterSerializer
