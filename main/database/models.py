@@ -61,13 +61,12 @@ class Bug (models.Model):
     class Meta:
         db_table = "bugs"
 
-
     name = models.CharField(null=True,max_length=1000)
     status = models.CharField(null=True,max_length=1000)
     priority = models.CharField(null=True,max_length=1000)
     reported_by = models.ForeignKey(User,null=True,on_delete=models.SET_NULL,related_name='user')
     developer_assigned = models.ForeignKey(User,null=True,on_delete=models.SET_NULL,related_name='developer')
-    comment = models.ForeignKey(Comment, null=True, default=None, on_delete=models.SET_NULL)
+    comment = models.ForeignKey(Comment, null=True, default=None, on_delete=models.SET_NULL, related_name='comment_to')
     upvote_count = models.IntegerField(default=0)
     downvote_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)

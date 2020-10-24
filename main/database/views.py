@@ -10,6 +10,7 @@ from django.http import HttpResponse, JsonResponse
 from knox.models import AuthToken
 from rest_framework import generics, permissions
 from django.http import HttpResponse, JsonResponse
+from rest_framework.filters import SearchFilter, OrderingFilter
 
 
 
@@ -68,7 +69,7 @@ class BugListAPI (generics.ListCreateAPIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
-    
+
     queryset = Bug.objects.all()
 
     ##view lists of bugs
@@ -110,7 +111,7 @@ class AddBugReportAPI(APIView):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
-#view and update bug report
+#view and update bug report (single report page)
 class BugReportAPI(APIView):
     permission_classes = [
         permissions.IsAuthenticated,
@@ -141,5 +142,36 @@ class BugReportAPI(APIView):
         return JsonResponse(data="wrong parameters")
 
 
+# view and search bug report by title, by assignee and by keyword
+class BugReportSearch(generics.ListAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
+
+    queryset = Bug.objects.all()
+    serializer_class = BugSerializer
+
+    filter_backends = (SearchFilter, OrderingFilter)
+    # able to filter by name, status, username of reporter
+    # http://127.0.0.1:8000/bugsearch?search=yourusername
+    search_fields = ('name', 'status', 'reported_by__username')
+
+#add comment to bug
+class AddCommentAPI(generics.ListCreateAPIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+
+    queryset = Comment.objects.all()
+    serializer_class = CommentSerializer
 
 
+    #view lists of comment (for testing)
+    def list(self, request):
+        queryset = self.get_queryset()
+        serializer = CommentSerializer(queryset, many=True)
+        return Response(serializer.data)
+
+    #create bugs
+    #def perform_create(self, serializer):
+        #serializer.save(comment_to=self.request.user)
