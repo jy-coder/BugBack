@@ -6,8 +6,8 @@ from accounts.serializers import UserSerializer
 
 
 class BugSerializer(serializers.ModelSerializer):
-    reported_by = UserSerializer(read_only=True)
-    developer_assigned = UserSerializer(read_only=True)
+    reported_by = UserSerializer()
+    developer_assigned = UserSerializer()
     class Meta:
         model = Bug
         fields = '__all__'
@@ -23,9 +23,4 @@ class CommentSerializer(serializers.ModelSerializer):
         model = Comment
         fields = '__all__'
 
-class BugReportSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Bug
-        #fields = ['id', 'name', 'created_at']
-        fields = '__all__'
 

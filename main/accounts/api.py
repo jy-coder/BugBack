@@ -5,7 +5,7 @@ from .serializers import UserSerializer, RegisterSerializer, LoginSerializer,Pro
 from django.contrib.auth.models import User
 from database.models import Profile
 from django.http import HttpResponse, JsonResponse
-
+from rest_framework.views import APIView
 
 ##########
 
@@ -55,11 +55,26 @@ class UserAPI(generics.ListCreateAPIView):
   queryset = Profile.objects.all()
   
   def list(self, request):
-      # Note the use of `get_queryset()` instead of `self.queryset`
       queryset = self.get_queryset()
       serializer = ProfileSerializer(queryset, many=True)
       return Response(serializer.data)
 
-class SingleUserAPI(generics.RetrieveAPIView):
-    queryset = Profile.objects.all()
-    serializer_class = ProfileSerializer
+class SingleUserAPI(APIView):
+    def get(self, request, pk):
+        profile = Profile.objects.all().filter(user_id=pk)
+        serializer = ProfileSerializer(profile, many=True)
+        return Response(serializer.data[0])  
+
+
+
+
+class DeveloperAPI(APIView):
+  serializer_class =ProfileSerializer
+  queryset = Profile.objects.all()
+  
+  def get(self, request):
+      profile = Profile.objects.all().filter(role_title="developer")
+      serializer = ProfileSerializer(profile, many=True)
+      return Response(serializer.data)  
+  
+     
