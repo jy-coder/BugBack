@@ -64,9 +64,7 @@ class BugReportAPI(APIView):
     ]
 
     def get(self, request):
-        #  get all reports from db
         reports = Bug.objects.all()
-        # parse all reports into JSON object
         serializer = BugSerializer(reports, many=True)
         return Response(serializer.data)
 
@@ -79,7 +77,6 @@ class BugReportAPI(APIView):
         
         if(instance):
             return Response(status=status.HTTP_201_CREATED)
-        # else return error status 400
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
     
 
@@ -99,13 +96,22 @@ class SingleBugAPI(APIView):
 
     #http://127.0.0.1:8000/bug/10/
     def patch(self, request,pk):
-        print(request.data)
         report = Bug.objects.filter(id=pk).update(**request.data)
         return Response(status=status.HTTP_200_OK)  
 
 
 
 
+
+class SearchBugAPI(APIView):
+    def get(self, request):
+        queryset = Bug.objects.all()
+        bugname = self.request.GET.get('q', None).replace(" ", "")
+        if bugname is not None:
+            queryset = queryset.filter(name__contains=bugname)
+            serializer = BugSerializer(queryset,many=True)
+
+        return Response(serializer.data,status=status.HTTP_200_OK)
 
 
 

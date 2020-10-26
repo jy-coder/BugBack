@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from database.views import RoleViewSet,  BugReportAPI, SingleBugAPI
+from database.views import RoleViewSet,  BugReportAPI, SingleBugAPI, SearchBugAPI
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -31,6 +31,7 @@ urlpatterns = [
     path('', include("accounts.urls")),
     path('bugs', BugReportAPI.as_view()),
     path('bug/<int:pk>/', SingleBugAPI.as_view()),
+    path('bug/search/', SearchBugAPI.as_view()),
     # path('bugreport/<int:id>/', BugReportAPI.as_view()),
    
 
