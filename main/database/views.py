@@ -99,7 +99,8 @@ class SingleBugAPI(APIView):
 
     #http://127.0.0.1:8000/bug/10/
     def patch(self, request,pk):
-        report = Bug.objects.all().filter(id=pk).update(**request.data)
+        print(request.data)
+        report = Bug.objects.filter(id=pk).update(**request.data)
         return Response(status=status.HTTP_200_OK)  
 
 
