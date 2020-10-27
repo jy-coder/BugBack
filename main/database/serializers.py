@@ -1,8 +1,7 @@
 from rest_framework import serializers
-from .models import  Bug, Role, Comment, Profile
+from .models import  Bug,  Comment, Profile
 from django.contrib.auth import authenticate
 from accounts.serializers import UserSerializer
-
 
 
 class BugSerializer(serializers.ModelSerializer):
@@ -13,14 +12,8 @@ class BugSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class RoleSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Role
-        fields = '__all__'
-
 class CommentSerializer(serializers.ModelSerializer):
+    user = UserSerializer()
     class Meta:
         model = Comment
         fields = '__all__'
-
-
