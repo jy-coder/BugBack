@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 
+#python manage.py test
 
 class BaseTest(APITestCase):
     def setUp(self):
