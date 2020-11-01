@@ -4,18 +4,6 @@ from django.dispatch import receiver
 from django.db.models.signals import post_save
 
 
-#######for testing endpoint -can remove later########
-class Role (models.Model):
-    ROLE_CHOICES = [
-        ('user','user'), 
-        ('developer','developer'),
-        ('triager','triager'),
-        ('reviewer','reviewer'),
-    ]
-
-    role_title = models.CharField(max_length=50,null=True,choices=ROLE_CHOICES)
-
-
 
 class Profile(models.Model):
     ROLE_CHOICES = [
@@ -49,6 +37,18 @@ class Bug (models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+
+class BugUserLikes(models.Model):
+    class Meta:
+        db_table = "bug_user_like"
+    user_id = models.IntegerField(null=True)
+    bug_id = models.IntegerField(null=True)
+
+class CommentUserLikes(models.Model):
+    class Meta:
+        db_table = "comment_user_like"
+    comment_id = models.IntegerField(null=True)
+    user_id = models.IntegerField(null=True)
 
 
 class Comment (models.Model):
