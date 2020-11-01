@@ -28,8 +28,8 @@ urlpatterns = [
     path('', include(router.urls)),
 	path('', include("database.urls")),
     path('', include("accounts.urls")),
-    path('bugs', BugReportAPI.as_view()),
-    path('bug/<int:pk>/', SingleBugAPI.as_view()),
+    path('bugs', BugReportAPI.as_view(),name="addbugrpt"),
+    path('bug/<int:pk>/', SingleBugAPI.as_view(),name="bug"),
     path('bug/search/', SearchBugAPI.as_view()),
     path('comment/<int:pk>/',CommentAPI.as_view()),
 

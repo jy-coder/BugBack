@@ -22,7 +22,7 @@ class Profile(models.Model):
 
 
 
-
+########
 class Bug (models.Model):
     class Meta:
         db_table = "bugs"

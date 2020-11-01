@@ -9,7 +9,6 @@ from database.models import Profile
 import string
 import random
 
-### Populate database method -this should only be run once###
 @csrf_exempt
 @require_http_methods(["GET", "DELETE"])
 def users(req):
@@ -83,7 +82,6 @@ def bugs(req):
     return(status.get(random_no,None))
 
   if(req.method == 'GET'):
-
       for i in range(1,501):
         developer = User.objects.get(id=assign_developer())
         bug = Bug(id=i,name="bug{}".format(i),
