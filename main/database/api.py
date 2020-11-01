@@ -48,7 +48,7 @@ def users(req):
       })
 
 
-#http://localhost:8000/populate_users
+#http://localhost:8000/populate_bugs
 @csrf_exempt
 @require_http_methods(["GET"])
 def bugs(req):
