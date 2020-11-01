@@ -9,8 +9,9 @@ from database.models import Profile
 import string
 import random
 
+#http://localhost:8000/populate_users
 @csrf_exempt
-@require_http_methods(["GET", "DELETE"])
+@require_http_methods(["GET"])
 def users(req):
     if(req.method == 'GET'):
       hash_passwd = make_password("123456")
@@ -47,7 +48,7 @@ def users(req):
       })
 
 
-
+#http://localhost:8000/populate_users
 @csrf_exempt
 @require_http_methods(["GET"])
 def bugs(req):

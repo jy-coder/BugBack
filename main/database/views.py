@@ -17,7 +17,7 @@ class BugReportAPI(APIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
-
+    #http://localhost:8000/bugs
     def get(self, request):
         reports = Bug.objects.all().order_by('-created_at')
         serializer = BugSerializer(reports, many=True)
@@ -38,6 +38,7 @@ class BugReportAPI(APIView):
 
 
 class SingleBugAPI(APIView):
+    #http://127.0.0.1:8000/bug/2
     def get(self, request, pk):
         print(self.request.user.id)
         reports = Bug.objects.all().filter(id=pk)
@@ -59,7 +60,7 @@ class SingleBugAPI(APIView):
 
 
 
-
+#http://127.0.0.1:8000/bug/search/?q=bug10
 class SearchBugAPI(APIView):
     def get(self, request):
         queryset = Bug.objects.all()
@@ -71,14 +72,16 @@ class SearchBugAPI(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
 
 
-
+## this should work but let me test it ##
 
 class CommentAPI(APIView):
+    #http://localhost:8000/comment/2
     def get(self, request, pk):
         comments = Comment.objects.all().filter(bug_id=pk)
         serializer = CommentSerializer(comments, many=True)
         return Response(serializer.data)  
 
+    #http://localhost:8000/comment/3/
     def post(self, request,pk):
         text= request.data.get('comment_text')
         instance = Comment(user=self.request.user,comment_text=text,bug_id=pk)
@@ -89,6 +92,7 @@ class CommentAPI(APIView):
 
 
 
+# still working on it
 
 class BugUserLikesAPI(APIView):
     def get(self, request, pk):
