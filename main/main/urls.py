@@ -30,7 +30,7 @@ urlpatterns = [
     path('', include("accounts.urls")),
     path('bugs', BugReportAPI.as_view(),name="addbugrpt"),
     path('bug/<int:pk>/', SingleBugAPI.as_view(),name="bug"),
-    path('bug/search/', SearchBugAPI.as_view()),
+    path('bug/search/', SearchBugAPI.as_view(), name='searchbug'),
     path('comment/<int:pk>/',CommentAPI.as_view()),
     path('buglikes/<int:pk>/',BugUserLikesAPI.as_view())
 

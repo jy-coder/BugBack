@@ -32,6 +32,26 @@ class LoginTest(BaseTest):
         self.assertEqual(request.status_code, status.HTTP_200_OK)
         print("Login Success!")
 
+    def test_login_fail_username(self):
+        # client data inputs
+        self.user_credentials = {
+            'username': 'johnny2',
+            'password': 'j54321'
+        }
+        request = self.client.post(self.login_url, self.user_credentials, format='json')
+        self.assertEqual(request.status_code, status.HTTP_400_BAD_REQUEST)
+        print("Login Fail, wrong username Success!")
+
+    def test_login_fail_password(self):
+        # client data inputs
+        self.user_credentials = {
+            'username': 'johnny',
+            'password': 'j12345'
+        }
+        request = self.client.post(self.login_url, self.user_credentials, format='json')
+        self.assertEqual(request.status_code, status.HTTP_400_BAD_REQUEST)
+        print("Login Fail, wrong password Success!")
+
     # able to access user's view
     def test_view_users(self):
         response = self.client.get(self.users_url)
