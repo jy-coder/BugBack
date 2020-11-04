@@ -20,5 +20,5 @@ class CommentSerializer(serializers.ModelSerializer):
 
 class BugUserLikesSerializer(serializers.ModelSerializer):
     class Meta:
-        model = BugUserLikes
+        model = BugUserLikes()
         fields = '__all__'

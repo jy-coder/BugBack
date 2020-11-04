@@ -64,7 +64,9 @@ class SingleBugAPI(APIView):
 class SearchBugAPI(APIView):
     def get(self, request):
         queryset = Bug.objects.all()
-        bugname = self.request.GET.get('q', None).replace(" ", "")
+        bugname = self.request.GET.get('q', None)
+        if(bugname):
+            bugname=bugname.replace(" ", "")
         if bugname is not None:
             queryset = queryset.filter(name__contains=bugname)
             serializer = BugSerializer(queryset,many=True)
@@ -75,6 +77,9 @@ class SearchBugAPI(APIView):
 ## this should work but let me test it ##
 
 class CommentAPI(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
     #http://localhost:8000/comment/2
     def get(self, request, pk):
         comments = Comment.objects.all().filter(bug_id=pk)
@@ -92,19 +97,27 @@ class CommentAPI(APIView):
 
 
 
-# still working on it
-
 class BugUserLikesAPI(APIView):
+    permission_classes = [
+        permissions.IsAuthenticated,
+    ]
     def get(self, request, pk):
         user_id = self.request.user.id
-        bug_likes = BugUserLikes.objects.all().filter(bug_id=pk,user_id=user_id)
+        bug_likes = BugUserLikes.objects.all().filter(bug_id=pk,user_id=self.request.user.id)
         serializer = BugUserLikesSerializer(bug_likes, many=True)
         return Response(serializer.data)  
 
     def post(self, request,pk):
-        text= request.data.get('comment_text')
-        instance = Comment(user=self.request.user,comment_text=text,bug_id=pk)
+        type_ = self.request.GET.get('type', None)
+        instance = BugUserLikes(bug_id=pk, user_id=self.request.user.id)
+        bug = Bug.objects.filter(id=pk).first()
+        if(type_ == "down"):
+            bug.upvote_count -= 1
+        elif(type_ == "up"):
+            bug.upvote_count += 1
+
+        bug.save()
         instance.save()
-        if(instance):
-            return Response(status=status.HTTP_201_CREATED)
-        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response(status=status.HTTP_200_OK)
+

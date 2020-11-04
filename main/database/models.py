@@ -3,8 +3,6 @@ from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
-
-
 class Profile(models.Model):
     ROLE_CHOICES = [
         ('user','user'), 
@@ -19,10 +17,6 @@ class Profile(models.Model):
     class Meta:
         db_table = "profile"
 
-
-
-
-########
 class Bug (models.Model):
     class Meta:
         db_table = "bugs"
@@ -33,7 +27,6 @@ class Bug (models.Model):
     reported_by = models.ForeignKey(User,null=True,on_delete=models.SET_NULL,related_name='user')
     developer_assigned = models.ForeignKey(User,null=True,on_delete=models.SET_NULL,related_name='developer')
     upvote_count = models.IntegerField(default=0)
-    downvote_count = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -44,11 +37,6 @@ class BugUserLikes(models.Model):
     user_id = models.IntegerField(null=True)
     bug_id = models.IntegerField(null=True)
 
-class CommentUserLikes(models.Model):
-    class Meta:
-        db_table = "comment_user_like"
-    comment_id = models.IntegerField(null=True)
-    user_id = models.IntegerField(null=True)
 
 
 class Comment (models.Model):

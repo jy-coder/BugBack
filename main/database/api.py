@@ -13,6 +13,9 @@ import random
 @csrf_exempt
 @require_http_methods(["GET"])
 def users(req):
+    def assign_expertise():
+      random_no = random.randint(0,6)
+      return random_no
     if(req.method == 'GET'):
       hash_passwd = make_password("123456")
       for i in range(1,36):
@@ -23,7 +26,7 @@ def users(req):
 
       for i in range(35,41):
         user = User(username="developer{}".format(i), email="developer{}@gmail.com".format(i), password=hash_passwd)
-        profile = Profile(user=user,role_title="developer")
+        profile = Profile(user=user,role_title="developer",expertise=assign_expertise())
         user.save()
         profile.save()
 
@@ -40,6 +43,7 @@ def users(req):
         profile = Profile(user=user,role_title="reviewer")
         user.save()
         profile.save()
+
 
 
 
@@ -62,8 +66,11 @@ def bugs(req):
     return(priority.get(random_no,None))
 
   def assign_developer():
-    random_no = random.randint(35,41)
-    return random_no
+    random_no = random.randint(0,41)
+    if(random_no >35 and random_no<41):
+      return random_no
+    else:
+      return None
 
   def assign_reported_by():
     random_no = random.randint(1,36)
@@ -84,13 +91,16 @@ def bugs(req):
 
   if(req.method == 'GET'):
       for i in range(1,501):
-        developer = User.objects.get(id=assign_developer())
+        developer_id = assign_developer()
+        if(developer_id):
+          developer = User.objects.get(id=developer_id)
+        else:
+          developer = None
         bug = Bug(id=i,name="bug{}".format(i),
         description="This is bug {}".format(i),
         status=assign_status(),
         priority=assign_priority(),
         upvote_count=assign_count(),
-        downvote_count=assign_count(),
         reported_by_id=assign_reported_by(),
         developer_assigned=developer)
         bug.save()
