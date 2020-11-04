@@ -6,7 +6,6 @@ from accounts.serializers import UserSerializer
 from database.models import Bug, Comment
 from database.serializers import BugSerializer
 from knox.models import AuthToken
-import json
 
 class BaseTest(APITestCase):
     def setUp(self):
@@ -23,12 +22,6 @@ class BaseTest(APITestCase):
 class BugTest(BaseTest):
     def test_can_add_bug(self):
         addbug_url = reverse('addbugrpt')
-
-        # data = {"name": "testunit new bug", "status": "new",
-        #         "description": "this is some testunit bug i found at patch ver 1.01",
-        #         "priority": "", "upvote_count": 0, "downvote_count": 0, "created_at": "2020-10-30T09:04:30.477007Z",
-        #         "updated_at": "2020-10-30T09:04:30.477007Z", "reported_by": 7, "developer_assigned": "", "comment": "",
-        #         }
 
         # create bug object with dummy data
         datas = Bug.objects.create(name='testunit new bug', status='new',
