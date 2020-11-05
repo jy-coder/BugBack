@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from database.views import   BugReportAPI, SingleBugAPI, SearchBugAPI,CommentAPI, BugUserLikesAPI
+from database.views import   BugReportAPI, SingleBugAPI, SearchBugAPI,CommentAPI, BugUserLikesAPI,SearchAssigneeAPI
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -32,7 +32,8 @@ urlpatterns = [
     path('bug/<int:pk>/', SingleBugAPI.as_view(),name="bug"),
     path('bug/search/', SearchBugAPI.as_view(), name='searchbug'),
     path('comment/<int:pk>/',CommentAPI.as_view()),
-    path('buglikes/<int:pk>/',BugUserLikesAPI.as_view())
+    path('buglikes/<int:pk>/',BugUserLikesAPI.as_view()),
+    path('assign_search/', SearchAssigneeAPI.as_view())
 
 ]
 
