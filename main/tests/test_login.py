@@ -21,6 +21,7 @@ class LoginTest(BaseTest):
         response = self.client.get(self.login_url)
         # status: 405 , as does not allow to do a GET method
         self.assertEqual(response.status_code, 405)
+        print()
 
     def test_login_sucess(self):
         # client data inputs
@@ -31,6 +32,7 @@ class LoginTest(BaseTest):
         request = self.client.post(self.login_url, self.user_credentials, format='json')
         self.assertEqual(request.status_code, status.HTTP_200_OK)
         print("Login Success!")
+        print()
 
     def test_login_fail_username(self):
         # client data inputs
@@ -51,12 +53,14 @@ class LoginTest(BaseTest):
         request = self.client.post(self.login_url, self.user_credentials, format='json')
         self.assertEqual(request.status_code, status.HTTP_400_BAD_REQUEST)
         print("Login Fail, wrong password Success!")
+        print()
 
     # able to access user's view
     def test_view_users(self):
         response = self.client.get(self.users_url)
         self.assertTrue(response.status_code, status.HTTP_200_OK)
         print("View users Success!")
+        print()
 
     def test_login_success(self):
         # able to login
@@ -65,3 +69,4 @@ class LoginTest(BaseTest):
         # able to access users
         response = self.client.get(self.users_url)
         self.assertEqual(response.status_code, 200)
+        print()

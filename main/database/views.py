@@ -122,23 +122,15 @@ class BugUserLikesAPI(APIView):
 
         return Response(status=status.HTTP_200_OK)
 
-
-
-
-#http://127.0.0.1:8000/assign_search?q=user1
+#http://127.0.0.1:8000/bug/assign_search?q=user1
 class SearchAssigneeAPI(APIView):
     def get(self, request):
         queryset = User.objects.all()
         name= self.request.GET.get('q', None)
-    
+
         if name is not None:
             queryset = queryset.filter(username__startswith=name,username__endswith=name)[0].id
-   
+
         bug = Bug.objects.filter(reported_by__id=queryset)
         serializer = BugSerializer(bug, many=True)
-        return Response(serializer.data)  
-     
-        
-
-    
-    
+        return Response(serializer.data)

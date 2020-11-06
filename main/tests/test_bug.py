@@ -47,5 +47,6 @@ class BugTest(BaseTest):
         self.assertEqual(response2.data[0], bug_serializer.data)
         print("View newly Added Bug Success!")
         self.client.logout()
+        print()
 
 

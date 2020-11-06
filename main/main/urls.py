@@ -33,7 +33,7 @@ urlpatterns = [
     path('bug/search/', SearchBugAPI.as_view(), name='searchbug'),
     path('comment/<int:pk>/',CommentAPI.as_view()),
     path('buglikes/<int:pk>/',BugUserLikesAPI.as_view()),
-    path('assign_search/', SearchAssigneeAPI.as_view())
+    path('bug/assign_search/', SearchAssigneeAPI.as_view(),name='searchbugasn')
 
 ]
 
