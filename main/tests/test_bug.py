@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from rest_framework import status
 from rest_framework.test import APIClient, APITestCase
 from accounts.serializers import UserSerializer
-from database.models import Bug, Comment
+from database.models import Bug
 from database.serializers import BugSerializer
 from knox.models import AuthToken
 
