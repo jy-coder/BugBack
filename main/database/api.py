@@ -20,7 +20,7 @@ def users(req):
       hash_passwd = make_password("123456")
       for i in range(1,36):
         user = User(username="reporter{}".format(i), email="reporter{}@gmail.com".format(i), password=hash_passwd)
-        profile = Profile(user=user,role_title="user")
+        profile = Profile(user=user,role_title="reporter")
         user.save()
         profile.save()
 
