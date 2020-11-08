@@ -1,0 +1,12 @@
+image: python:3.6
+ 
+Build:
+  stage: build
+  script:
+    - docker build .
+
+Unit-Tests:
+  stage: test
+  script:
+    - cd main
+    - python manage.py test
