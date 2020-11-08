@@ -5,7 +5,7 @@ from django.db.models.signals import post_save
 
 class Profile(models.Model):
     ROLE_CHOICES = [
-        ('user','user'), 
+        ('reporter','reporter'), 
         ('developer','developer'),
         ('triager','triager'),
         ('reviewer','reviewer'),

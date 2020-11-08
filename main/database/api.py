@@ -19,7 +19,7 @@ def users(req):
     if(req.method == 'GET'):
       hash_passwd = make_password("123456")
       for i in range(1,36):
-        user = User(username="user{}".format(i), email="user{}@gmail.com".format(i), password=hash_passwd)
+        user = User(username="reporter{}".format(i), email="reporter{}@gmail.com".format(i), password=hash_passwd)
         profile = Profile(user=user,role_title="user")
         user.save()
         profile.save()
@@ -51,7 +51,7 @@ def users(req):
         "succesfully populate"
       })
 
-
+##
 #http://localhost:8000/populate_bugs
 @csrf_exempt
 @require_http_methods(["GET"])
@@ -66,14 +66,14 @@ def bugs(req):
     return(priority.get(random_no,None))
 
   def assign_developer():
-    random_no = random.randint(0,41)
+    random_no = random.randint(0,40)
     if(random_no >35 and random_no<41):
       return random_no
     else:
       return None
 
   def assign_reported_by():
-    random_no = random.randint(1,36)
+    random_no = random.randint(1,35)
     return random_no
 
   def assign_count():
@@ -82,10 +82,12 @@ def bugs(req):
 
 
   def assign_status():
-    random_no = random.randint(1,3)
+    random_no = random.randint(1,4)
     status = {
       1: "fixed",
-      2: "active"
+      2: "active",
+      3: "closed",
+      4: "reviewed"
     }
     return(status.get(random_no,None))
 
@@ -108,7 +110,6 @@ def bugs(req):
   return HttpResponse({
         "succesfully populate bugs"
   })
-
 
 
 
