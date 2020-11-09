@@ -37,8 +37,8 @@ class SearchTest(BaseTest):
         print("Able to access search view-name success!")
         print()
 
-    def test_can_search_bug_name(self):
-        # test search bug with query bug name 'apitestcase'
+    def test_can_search_bug_keyword(self):
+        # test search bug with query keyword 'apitestcase'
         search_url = '/bug/search/?q=apitestcase'
         response2 = self.client.get(search_url, format='json')
         self.assertEqual(response2.status_code, status.HTTP_200_OK)
@@ -58,12 +58,24 @@ class SearchTest(BaseTest):
         response2 = self.client.get(search_url, format='json')
         self.assertEqual(response2.status_code, status.HTTP_200_OK)
         print("Able to access search view-assignee success!")
-
-        print("Search by assignee data: ", end=" ")
-        print(response2.data[0])
+        print("Search by assignee response data: {}".format(response2.data[0]))
 
         # test data retrieved based on search query is correct
         self.assertEqual(response2.data[0], self.bug_serializer.data)
         print("Able to search bug assignee correctly success!")
+        self.client.logout()
+        print()
+
+    def test_can_search_bug_exact_title(self):
+        # test search bug with query bug title 'kelvin'
+        searchtitle_url = 'http://127.0.0.1:8000/bug/title_search/?q=apitestcase new bug'
+        response2 = self.client.get(searchtitle_url, format='json')
+        self.assertEqual(response2.status_code, status.HTTP_200_OK)
+        print("Able to access search view-title success!")
+        print("Search by title response data: {}".format(response2.data[0]))
+
+        # test data retrieved based on search query is correct
+        self.assertEqual(response2.data[0], self.bug_serializer.data)
+        print("Able to search bug title correctly success!")
         self.client.logout()
         print()
