@@ -96,7 +96,7 @@ class CommentAPI(APIView):
         return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
-
+#http://127.0.0.1:8000/buglikes/20/?type=up 
 class BugUserLikesAPI(APIView):
     permission_classes = [
         permissions.IsAuthenticated,
@@ -105,6 +105,7 @@ class BugUserLikesAPI(APIView):
         user_id = self.request.user.id
         bug_likes = BugUserLikes.objects.all().filter(bug_id=pk,user_id=self.request.user.id)
         serializer = BugUserLikesSerializer(bug_likes, many=True)
+
         return Response(serializer.data)  
 
     def post(self, request,pk):

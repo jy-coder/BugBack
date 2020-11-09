@@ -49,6 +49,7 @@ class CommentTest(BaseTest):
         print("Response comment data: ", end=" ")
         print(comment_serializer.data)
         print("Add Comment Success!")
+        self.client.logout()
         print()
 
     def test_can_get_comment(self):

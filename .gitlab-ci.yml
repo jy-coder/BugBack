@@ -1,13 +1,41 @@
-image: python:3.6
- 
-Build:
-  stage: build
-  script:
-    - docker build .
 
-Unit-Tests:
+image: python:latest
+
+services:
+  - postgres:latest
+
+variables:
+  POSTGRES_DB: bugapp
+  POSTGRES_USER: myprojectuser
+  POSTGRES_PASSWORD: 123456
+
+# This folder is cached between builds
+# http://docs.gitlab.com/ee/ci/yaml/README.html#cache
+cache:
+  paths:
+    - ~/.cache/pip/
+
+before_script:
+  - python -V  # Print out python version for debugging
+  - pip install -r requirements.txt
+
+stages:
+  - test
+
+
+TDD_tests:
   stage: test
+  variables:
+    #DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/$POSTGRES_DB"
+    DATABASE_URL: "postgresql://postgres:postgres@postgres:/bugapp"
   script:
+    # this configures Django application to use attached postgres database that is run on `postgres` host
+    - whoami
+    - python 
+    - export DATABASE_URL=postgres://postgres:@postgres:5432/bug-app
+    - apt-get update
+    - apt-get install -y python-dev python-pip
     - cd main
-    - pip install -r requirements.txt
+    - python manage.py makemigrations
+    - python manage.py migrate
     - python manage.py test

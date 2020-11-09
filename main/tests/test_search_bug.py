@@ -49,6 +49,7 @@ class SearchTest(BaseTest):
         # test data retrieved based on search query is correct
         self.assertEqual(response2.data[0], self.bug_serializer.data)
         print("Able to search bug correctly success!")
+        self.client.logout()
         print()
 
     def test_can_search_bug_assignee(self):
@@ -64,4 +65,5 @@ class SearchTest(BaseTest):
         # test data retrieved based on search query is correct
         self.assertEqual(response2.data[0], self.bug_serializer.data)
         print("Able to search bug assignee correctly success!")
+        self.client.logout()
         print()
