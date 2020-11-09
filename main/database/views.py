@@ -69,7 +69,6 @@ class SearchBugAPI(APIView):
             bugname=bugname.replace(" ", "")
         if bugname is not None:
             queryset = queryset.filter(name__contains=bugname)
-            print(queryset)
             serializer = BugSerializer(queryset,many=True)
 
         return Response(serializer.data,status=status.HTTP_200_OK)
@@ -134,3 +133,14 @@ class SearchAssigneeAPI(APIView):
         bug = Bug.objects.filter(reported_by__id=queryset)
         serializer = BugSerializer(bug, many=True)
         return Response(serializer.data)
+
+
+class SearchExactTitleAPI(APIView):
+    def get(self, request):
+        queryset = Bug.objects.all()
+        bugname = self.request.GET.get('q', None)
+        if bugname is not None:
+            queryset = queryset.filter(name=bugname)
+            serializer = BugSerializer(queryset,many=True)
+
+        return Response(serializer.data,status=status.HTTP_200_OK)

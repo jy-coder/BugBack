@@ -15,14 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from database.views import   BugReportAPI, SingleBugAPI, SearchBugAPI,CommentAPI, BugUserLikesAPI,SearchAssigneeAPI
+from database.views import   BugReportAPI, SingleBugAPI, SearchBugAPI,CommentAPI, BugUserLikesAPI,SearchAssigneeAPI,SearchExactTitleAPI
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-
-########## Authenticate route #######
-
-
 
 urlpatterns = [
     path('', include(router.urls)),
@@ -33,7 +29,8 @@ urlpatterns = [
     path('bug/search/', SearchBugAPI.as_view(), name='searchbug'),
     path('comment/<int:pk>/',CommentAPI.as_view(),name='comment'),
     path('buglikes/<int:pk>/',BugUserLikesAPI.as_view()),
-    path('bug/assign_search/', SearchAssigneeAPI.as_view(),name='searchbugasn')
+    path('bug/assign_search/', SearchAssigneeAPI.as_view(),name='searchbugasn'),
+    path('bug/title_search/', SearchExactTitleAPI.as_view())
 
 ]
 
