@@ -10,7 +10,7 @@ from django.http import HttpResponse, JsonResponse
 from knox.models import AuthToken
 from rest_framework import generics, permissions
 from django.http import HttpResponse, JsonResponse
-
+from datetime import datetime, timedelta
 
 
 class BugReportAPI(APIView):
@@ -145,3 +145,17 @@ class SearchExactTitleAPI(APIView):
             serializer = BugSerializer(queryset,many=True)
 
         return Response(serializer.data,status=status.HTTP_200_OK)
+
+
+class weeklyBug(APIView):
+    def get(self, request):
+        last_week= datetime.today() - timedelta(days=7)
+        count = Bug.objects.filter(created_at__gte=last_week, status="closed").count()
+        return Response({"count":count})
+
+
+class monthlyBug(APIView):
+    def get(self, request):
+        last_month = datetime.today() - timedelta(days=30)
+        count = Bug.objects.filter(created_at__gte=last_month, status="closed").count()
+        return Response({"count":count})

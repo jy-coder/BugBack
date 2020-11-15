@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from database.views import   BugReportAPI, SingleBugAPI, SearchBugAPI,CommentAPI, BugUserLikesAPI,SearchAssigneeAPI,SearchExactTitleAPI
+from database.views import   BugReportAPI, SingleBugAPI, SearchBugAPI,CommentAPI, BugUserLikesAPI,SearchAssigneeAPI,SearchExactTitleAPI,weeklyBug,monthlyBug
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -30,7 +30,9 @@ urlpatterns = [
     path('comment/<int:pk>/',CommentAPI.as_view(),name='comment'),
     path('buglikes/<int:pk>/',BugUserLikesAPI.as_view()),
     path('bug/assign_search/', SearchAssigneeAPI.as_view(),name='searchbugasn'),
-    path('bug/title_search/', SearchExactTitleAPI.as_view())
+    path('bug/title_search/', SearchExactTitleAPI.as_view()),
+    path('bug/monthly/', monthlyBug.as_view()),
+    path('bug/weekly/', weeklyBug.as_view())
 
 ]
 
