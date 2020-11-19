@@ -119,15 +119,17 @@ class Comment (models.Model):
 
 
 
+class Reporter(models.Model):
+    reporter_id = models.IntegerField(null=True)
 
 
-# class Developer(models.Model):
-#     developer_id = models.IntegerField(null=True)
+class Developer(models.Model):
+    developer_id = models.IntegerField(null=True)
 
 
-# class Reviewer(models.Model):
-#     reviewer_id = models.IntegerField(null=True)
+class Reviewer(models.Model):
+    reviewer_id = models.IntegerField(null=True)
 
 
-# class Triager(models.Model):
-#     triager_id = models.IntegerField(null=True)
+class Triager(models.Model):
+    triager_id = models.IntegerField(null=True)
