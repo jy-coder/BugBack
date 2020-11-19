@@ -92,7 +92,7 @@ DATABASES = {
     'NAME': 'bugapp',
     'USER': 'myprojectuser',
     'PASSWORD': '123456',
-    #'HOST': 'localhost',
+    # 'HOST': 'localhost',
     # for gitlab-ci.yml pipline
     'HOST': 'postgres',
     'PORT': '',

@@ -7,32 +7,9 @@ from database.models import Profile
 from django.http import HttpResponse, JsonResponse
 from rest_framework.views import APIView
 
-##########
-
-# Normal Register API
-class RegisterAPI(generics.GenericAPIView):
-  serializer_class = RegisterSerializer
-
-  def post(self, request, *args, **kwargs):
-    serializer = self.get_serializer(data=request.data)
-    serializer.is_valid(raise_exception=True)
-
-
-    user_instance = UserSerializer(User, context=self.get_serializer_context()).data
-    
-    return Response({
-      "user": user_instance,
-      "token": AuthToken.objects.create(User)[1]
-    })
-
-
-
-
-
-
 
 # Login API
-class LoginAPI(generics.GenericAPIView):
+class LoginController(generics.GenericAPIView):
   serializer_class = LoginSerializer
 
   def post(self, request, *args, **kwargs):
@@ -47,10 +24,7 @@ class LoginAPI(generics.GenericAPIView):
     })
 
 # Get User API
-class UserAPI(generics.ListCreateAPIView):
-  # permission_classes = [
-  #   permissions.IsAuthenticated,
-  # ]
+class UserController(generics.ListCreateAPIView):
   serializer_class =ProfileSerializer
   queryset = Profile.objects.all()
   
@@ -59,16 +33,14 @@ class UserAPI(generics.ListCreateAPIView):
       serializer = ProfileSerializer(queryset, many=True)
       return Response(serializer.data)
 
-class SingleUserAPI(APIView):
+class SingleUserController(APIView):
     def get(self, request, pk):
         profile = Profile.objects.all().filter(user_id=pk)
         serializer = ProfileSerializer(profile, many=True)
         return Response(serializer.data[0])  
 
 
-
-
-class DeveloperAPI(APIView):
+class DeveloperController(APIView):
   serializer_class =ProfileSerializer
   queryset = Profile.objects.all()
   

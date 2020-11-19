@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from database.views import   BugReportAPI, SingleBugAPI, SearchBugAPI,CommentAPI, BugUserLikesAPI,SearchAssigneeAPI,SearchExactTitleAPI,weeklyBug,monthlyBug
+from database.views import BugsController, BugController,SearchKeywordController,CommentController, BugStatusController,SearchAssigneeController,SearchTitleController,ViewWeeklyBugController,ViewMonthlyBugController
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
@@ -24,15 +24,15 @@ urlpatterns = [
     path('', include(router.urls)),
 	path('', include("database.urls")),
     path('', include("accounts.urls")),
-    path('bugs', BugReportAPI.as_view(),name="addbugrpt"),
-    path('bug/<int:pk>/', SingleBugAPI.as_view(),name="bug"),
-    path('bug/search/', SearchBugAPI.as_view(), name='searchbug'),
-    path('comment/<int:pk>/',CommentAPI.as_view(),name='comment'),
-    path('buglikes/<int:pk>/',BugUserLikesAPI.as_view()),
-    path('bug/assign_search/', SearchAssigneeAPI.as_view(),name='searchbugasn'),
-    path('bug/title_search/', SearchExactTitleAPI.as_view()),
-    path('bug/monthly/', monthlyBug.as_view()),
-    path('bug/weekly/', weeklyBug.as_view())
+    path('bugs', BugsController.as_view(),name="addbugrpt"),
+    path('bug/<int:pk>/', BugController.as_view(),name="bug"),
+    path('bug/search/', SearchKeywordController.as_view(), name='searchbug'),
+    path('comment/<int:pk>/',CommentController.as_view(),name='comment'),
+    path('buglikes/<int:pk>/',BugStatusController.as_view()),
+    path('bug/assign_search/', SearchAssigneeController.as_view(),name='searchbugasn'),
+    path('bug/title_search/', SearchTitleController.as_view()),
+    path('bug/monthly/', ViewMonthlyBugController.as_view()),
+    path('bug/weekly/', ViewWeeklyBugController.as_view())
 
 ]
 

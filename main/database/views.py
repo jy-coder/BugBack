@@ -13,7 +13,7 @@ from django.http import HttpResponse, JsonResponse
 from datetime import datetime, timedelta
 
 
-class BugReportAPI(APIView):
+class BugsController(APIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
@@ -37,7 +37,7 @@ class BugReportAPI(APIView):
     
 
 
-class SingleBugAPI(APIView):
+class BugController(APIView):
     #http://127.0.0.1:8000/bug/2
     def get(self, request, pk):
         print(self.request.user.id)
@@ -61,7 +61,7 @@ class SingleBugAPI(APIView):
 
 
 #http://127.0.0.1:8000/bug/search/?q=bug10
-class SearchBugAPI(APIView):
+class SearchKeywordController(APIView):
     def get(self, request):
         queryset = Bug.objects.all()
         bugname = self.request.GET.get('q', None)
@@ -76,7 +76,7 @@ class SearchBugAPI(APIView):
 
 ## this should work but let me test it ##
 
-class CommentAPI(APIView):
+class CommentController(APIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
@@ -97,7 +97,7 @@ class CommentAPI(APIView):
 
 
 #http://127.0.0.1:8000/buglikes/20/?type=up 
-class BugUserLikesAPI(APIView):
+class BugStatusController(APIView):
     permission_classes = [
         permissions.IsAuthenticated,
     ]
@@ -123,7 +123,7 @@ class BugUserLikesAPI(APIView):
         return Response(status=status.HTTP_200_OK)
 
 #http://127.0.0.1:8000/bug/assign_search?q=user1
-class SearchAssigneeAPI(APIView):
+class SearchAssigneeController(APIView):
     def get(self, request):
         queryset = User.objects.all()
         name= self.request.GET.get('q', None)
@@ -136,7 +136,7 @@ class SearchAssigneeAPI(APIView):
         return Response(serializer.data)
 
 
-class SearchExactTitleAPI(APIView):
+class SearchTitleController(APIView):
     def get(self, request):
         queryset = Bug.objects.all()
         bugname = self.request.GET.get('q', None)
@@ -147,14 +147,14 @@ class SearchExactTitleAPI(APIView):
         return Response(serializer.data,status=status.HTTP_200_OK)
 
 
-class weeklyBug(APIView):
+class ViewWeeklyBugController(APIView):
     def get(self, request):
         last_week= datetime.today() - timedelta(days=7)
         count = Bug.objects.filter(created_at__gte=last_week, status="closed").count()
         return Response({"count":count})
 
 
-class monthlyBug(APIView):
+class ViewMonthlyBugController(APIView):
     def get(self, request):
         last_month = datetime.today() - timedelta(days=30)
         count = Bug.objects.filter(created_at__gte=last_month, status="closed").count()
