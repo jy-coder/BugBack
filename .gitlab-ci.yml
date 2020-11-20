@@ -20,22 +20,29 @@ before_script:
   - pip install -r requirements.txt
 
 stages:
+  - build
   - test
 
-
-TDD_tests:
-  stage: test
+Build:
+  stage: build
   variables:
     #DATABASE_URL: "postgresql://postgres:postgres@postgres:5432/$POSTGRES_DB"
     DATABASE_URL: "postgresql://postgres:postgres@postgres:/bugapp"
   script:
     # this configures Django application to use attached postgres database that is run on `postgres` host
     - whoami
-    - python 
+    - python
     - export DATABASE_URL=postgres://postgres:@postgres:5432/bug-app
     - apt-get update
     - apt-get install -y python-dev python-pip
     - cd main
     - python manage.py makemigrations
     - python manage.py migrate
+    - echo "Build successful"
+
+TDD_tests:
+  stage: test
+  script:
+    - cd main
     - python manage.py test
+    - echo "Test successful"
